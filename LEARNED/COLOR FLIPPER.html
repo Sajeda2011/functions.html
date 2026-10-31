@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>color flipper</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 100px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: rgb(243, 236, 168);
+        }
+
+    
+            .note {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                margin: 0;
+                font-size: 14px;
+                color: #555;
+                background: rgba(255, 255, 255, 0.8);
+                padding: 8px 16px;
+                border-radius: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+
+
+
+        
+    </style>
+</head>
+
+<body>
+
+    <button id="button">Change background colour</button>
+    <center>
+        <p class="note"><small>'click' or 'Enter' the button to change color</small></p>
+    </center>
+
+    <script>
+
+        let btn = document.getElementById('button');
+
+        let colors = ['black', 'white', 'pink', 'aqua', 'yellow', 'green', 'purple'];
+
+
+
+        btn.addEventListener('keydown', function (event) {
+            let randomIndex = Math.floor(Math.random() * colors.length);
+            if (event.key === "Enter")
+                document.body.style.backgroundColor = colors[randomIndex];
+        });
+
+        btn.addEventListener('click', function () {
+            let randomIndex = Math.floor(Math.random() * colors.length);
+            document.body.style.backgroundColor = colors[randomIndex];
+        });
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

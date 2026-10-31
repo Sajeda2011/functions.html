@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PTM Table</title>
+  <style>
+    table {
+      width: 100%;
+      font-family: Arial, sans-serif;
+      
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #1e3a8a;
+      color: #fff;
+    }
+
+    caption {
+      font-weight: bold;
+      font-size: 16px;
+      padding: 10px;
+      background: #e0e7ff;
+      border: 1px solid #333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table id="myTable">
+    <caption>Parents Teacher Meeting Experience Table</caption>
+
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Role</th>
+        <th>Age</th>
+        <th>Guardian Name</th>
+        <th>Meeting Start Time</th>
+        <th>Complaints</th>
+        <th>Behaviour</th>
+        <th>Was Meeting Useful?</th>
+        <th>Minutes of Meeting</th>
+        <th>Student Progress</th>
+        <th>Next Meeting?</th>
+      </tr>
+    </thead>
+
+    <tbody id="tableBody">
+
+    </tbody>
+
+  </table>
+
+  <script>
+    var tableBody = document.getElementById("tableBody");
+
+    async function fetchData() {
+      try {
+        var response = await fetch("database.json");
+
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status + " while loading database.json");
+        }
+
+        var data = await response.json();
+
+        var records = data.PTM;
+
+        var fields = ["id", "role", "age", "guardianName", "meetingStartTime",
+          "complaints", "behaviour", "useful", "minutesOfMeeting",
+          "studentProgress", "nextMeeting"];
+        var fragment = document.createDocumentFragment();
+
+        records.forEach(function (record) {
+          var tr = document.createElement("tr");
+          fields.forEach(function (field) {
+            var td = document.createElement("td");
+            var value = record[field];
+            if (field === "role") {
+              var strong = document.createElement("strong");
+              strong.textContent = value;
+              td.appendChild(strong);
+            } else {
+              td.textContent = field === "minutesOfMeeting" ? value + " min" : value;
+            }
+            tr.appendChild(td);
+          });
+          fragment.appendChild(tr);
+        });
+
+        tableBody.appendChild(fragment);
+
+      } catch (error) {
+        console.error("Error:", error);
+        tableBody.innerHTML = '<tr><td colspan="11">Could not load data: ' + error.message + ' (open via a web server, not file://)</td></tr>';
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+
+</html>

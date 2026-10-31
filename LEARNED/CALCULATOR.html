@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator · white + blue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      /* white/light background, blue accents */
+      --color-bg: #F2F5F9;
+      --color-frame: #FFFFFF;
+      --color-display-bg: #F8FAFE;
+      --color-text-primary: #0B1A33;
+      --color-text-secondary: #4B5D7A;
+      --color-key-bg: #E8EDF6;
+      --color-key-hover: #D5DFEE;
+      --color-key-active: #C2CFE6;
+      --color-operator-bg: #1A5C9E;
+      --color-operator-hover: #1F6EB8;
+      --color-operator-active: #2580D2;
+      --color-equals-bg: #0A4B8C;
+      --color-equals-hover: #0E5DA8;
+      --color-equals-active: #1370C4;
+      --color-function-text: #1A5C9E;
+      --radius-frame: 24px;
+      --radius-key: 12px;
+      --font-display: "IBM Plex Mono", "Courier New", monospace;
+      --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --shadow-soft: 0 12px 40px rgba(0, 20, 60, 0.10), 0 2px 8px rgba(0, 20, 60, 0.04);
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-bg);
+      font-family: var(--font-ui);
+      padding: 24px;
+    }
+    .calculator {
+      width: 320px;
+      background: var(--color-frame);
+      border-radius: var(--radius-frame);
+      padding: 24px 20px 20px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .display {
+      background: var(--color-display-bg);
+      border-radius: 16px;
+      padding: 22px 18px 16px;
+      margin-bottom: 20px;
+      text-align: right;
+      overflow: hidden;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
+      border: 1px solid rgba(26, 92, 158, 0.08);
+    }
+    .expression {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      min-height: 18px;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      letter-spacing: 0.3px;
+    }
+    .expression::-webkit-scrollbar { display: none; }
+    .output {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-top: 6px;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .output::-webkit-scrollbar { display: none; }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .key {
+      height: 62px;
+      border: none;
+      border-radius: var(--radius-key);
+      font-family: var(--font-ui);
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      background: var(--color-key-bg);
+      cursor: pointer;
+      transition: background 0.12s ease, transform 0.06s ease, box-shadow 0.12s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .key:hover { background: var(--color-key-hover); }
+    .key:active {
+      background: var(--color-key-active);
+      transform: scale(0.96);
+      box-shadow: 0 1px 3px rgba(0,20,60,0.06);
+    }
+    .key:focus-visible {
+      outline: 2px solid var(--color-operator-bg);
+      outline-offset: 2px;
+    }
+    /* function keys (AC, ±, %, ⌫) – blue text, light bg */
+    .key-function {
+      color: var(--color-function-text);
+      background: var(--color-key-bg);
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .key-function:hover { background: #DDE6F2; }
+    .key-function:active { background: #C9D6E8; }
+
+    /* operator keys – blue background, white text */
+    .key-operator {
+      background: var(--color-operator-bg);
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 2px 4px rgba(26, 92, 158, 0.15);
+    }
+    .key-operator:hover { background: var(--color-operator-hover); }
+    .key-operator:active {
+      background: var(--color-operator-active);
+      transform: scale(0.96);
+    }
+    .key-operator.is-selected {
+      background: var(--color-operator-active);
+      box-shadow: 0 0 0 3px rgba(26, 92, 158, 0.25), 0 2px 6px rgba(26,92,158,0.2);
+    }
+
+    /* equals – deep blue, white text */
+    .key-equals {
+      background: var(--color-equals-bg);
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 2px 6px rgba(10, 75, 140, 0.25);
+    }
+    .key-equals:hover { background: var(--color-equals-hover); }
+    .key-equals:active {
+      background: var(--color-equals-active);
+      transform: scale(0.96);
+    }
+
+    /* digit keys: light blue-grey (already default) */
+    .key-digit {
+      background: var(--color-key-bg);
+    }
+    .key-digit:hover { background: var(--color-key-hover); }
+    .key-digit:active { background: var(--color-key-active); }
+
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+<main class="calculator" role="application" aria-label="Calculator">
+  <section class="display" aria-live="polite">
+    <div id="expression" class="expression"></div>
+    <div id="output" class="output">0</div>
+  </section>
+  <section class="keypad">
+    <button type="button" class="key key-function" data-action="clear">AC</button>
+    <button type="button" class="key key-function" data-action="negate">+/−</button>
+    <button type="button" class="key key-function" data-action="percent">%</button>
+    <button type="button" class="key key-operator" data-action="operator" data-operator="divide">÷</button>
+
+    <button type="button" class="key key-digit" data-digit="7">7</button>
+    <button type="button" class="key key-digit" data-digit="8">8</button>
+    <button type="button" class="key key-digit" data-digit="9">9</button>
+    <button type="button" class="key key-operator" data-action="operator" data-operator="multiply">×</button>
+
+    <button type="button" class="key key-digit" data-digit="4">4</button>
+    <button type="button" class="key key-digit" data-digit="5">5</button>
+    <button type="button" class="key key-digit" data-digit="6">6</button>
+    <button type="button" class="key key-operator" data-action="operator" data-operator="subtract">−</button>
+
+    <button type="button" class="key key-digit" data-digit="1">1</button>
+    <button type="button" class="key key-digit" data-digit="2">2</button>
+    <button type="button" class="key key-digit" data-digit="3">3</button>
+    <button type="button" class="key key-operator" data-action="operator" data-operator="add">+</button>
+
+    <button type="button" class="key key-function" data-action="backspace" aria-label="Backspace">⌫</button>
+    <button type="button" class="key key-digit" data-digit="0">0</button>
+    <button type="button" class="key key-digit" data-action="decimal">.</button>
+    <button type="button" class="key key-equals" data-action="equals">=</button>
+  </section>
+</main>
+
+<script>
+  (function () {
+    "use strict";
+
+    const expressionEl = document.getElementById("expression");
+    const outputEl = document.getElementById("output");
+    const keypad = document.querySelector(".keypad");
+
+    const OPERATOR_SYMBOLS = {
+      add: "+",
+      subtract: "\u2212",
+      multiply: "\u00D7",
+      divide: "\u00F7"
+    };
+
+    const MAX_DIGITS = 15;
+
+    // ----- state (mutable) -----
+    const state = {
+      previousValue: null,
+      currentValue: "0",
+      operator: null,
+      overwrite: true,
+      error: false
+    };
+
+    // ----- helpers -----
+    function clampDigits(value) {
+      const digitsOnly = value.replace(/[^0-9]/g, "");
+      return digitsOnly.length <= MAX_DIGITS;
+    }
+
+    function formatNumber(numberString) {
+      if (numberString === "" || numberString === "-") return numberString;
+      const isNegative = numberString.charAt(0) === "-";
+      const unsigned = isNegative ? numberString.slice(1) : numberString;
+      const parts = unsigned.split(".");
+      let integerPart = parts[0] === "" ? "0" : parts[0];
+      const decimalPart = parts.length > 1 ? parts[1] : null;
+
+      if (integerPart.length > 1) {
+        integerPart = integerPart.replace(/^0+(?=\d)/, "");
+      }
+
+      const formattedInteger = Number(integerPart).toLocaleString("en-US");
+      let result = formattedInteger;
+      if (decimalPart !== null) {
+        result += "." + decimalPart;
+      }
+      return (isNegative ? "-" : "") + result;
+    }
+
+    function trimFloat(number) {
+      if (!Number.isFinite(number)) return "Error";
+      const fixed = Number(number.toPrecision(12));
+      return String(fixed);
+    }
+
+    // ----- core operations -----
+    function compute(a, operator, b) {
+      switch (operator) {
+        case "add": return a + b;
+        case "subtract": return a - b;
+        case "multiply": return a * b;
+        case "divide":
+          if (b === 0) return null;
+          return a / b;
+        default: return b;
+      }
+    }
+
+    function setError() {
+      state.error = true;
+      state.currentValue = "Error";
+      state.previousValue = null;
+      state.operator = null;
+      state.overwrite = true;
+    }
+
+    function resetAll() {
+      state.previousValue = null;
+      state.currentValue = "0";
+      state.operator = null;
+      state.overwrite = true;
+      state.error = false;
+    }
+
+    // ----- input functions -----
+    function inputDigit(digit) {
+      if (state.error) resetAll();
+      if (state.overwrite) {
+        state.currentValue = digit === "0" ? "0" : digit;
+        state.overwrite = false;
+        return;
+      }
+      if (state.currentValue === "0") {
+        state.currentValue = digit;
+        return;
+      }
+      const candidate = state.currentValue + digit;
+      if (clampDigits(candidate)) {
+        state.currentValue = candidate;
+      }
+    }
+
+    function inputDecimal() {
+      if (state.error) resetAll();
+      if (state.overwrite) {
+        state.currentValue = "0.";
+        state.overwrite = false;
+        return;
+      }
+      if (state.currentValue.indexOf(".") === -1) {
+        state.currentValue += ".";
+      }
+    }
+
+    function backspace() {
+      if (state.error) {
+        resetAll();
+        return;
+      }
+      if (state.overwrite) return;
+      if (state.currentValue.length <= 1 || (state.currentValue.length === 2 && state.currentValue.charAt(0) === "-")) {
+        state.currentValue = "0";
+        state.overwrite = true;
+        return;
+      }
+      state.currentValue = state.currentValue.slice(0, -1);
+    }
+
+    function negate() {
+      if (state.error) return;
+      if (state.currentValue === "0") return;
+      state.currentValue = state.currentValue.charAt(0) === "-"
+        ? state.currentValue.slice(1)
+        : "-" + state.currentValue;
+    }
+
+    function percent() {
+      if (state.error) return;
+      const value = parseFloat(state.currentValue);
+      if (Number.isNaN(value)) return;
+      const base = state.previousValue !== null ? parseFloat(state.previousValue) : value;
+      const result = state.previousValue !== null ? (base * value) / 100 : value / 100;
+      state.currentValue = trimFloat(result);
+    }
+
+    function chooseOperator(operator) {
+      if (state.error) return;
+      if (state.operator && !state.overwrite) {
+        equals();
+      }
+      state.previousValue = state.currentValue;
+      state.operator = operator;
+      state.overwrite = true;
+    }
+
+    function equals() {
+      if (state.error || state.operator === null || state.previousValue === null) return;
+      const a = parseFloat(state.previousValue);
+      const b = parseFloat(state.currentValue);
+      const result = compute(a, state.operator, b);
+
+      if (result === null) {
+        setError();
+        return;
+      }
+
+      state.currentValue = trimFloat(result);
+      state.previousValue = null;
+      state.operator = null;
+      state.overwrite = true;
+    }
+
+    // ----- render -----
+    function render() {
+      outputEl.textContent = state.error ? "Error" : formatNumber(state.currentValue);
+      if (state.operator && state.previousValue !== null) {
+        expressionEl.textContent = formatNumber(state.previousValue) + " " + OPERATOR_SYMBOLS[state.operator];
+      } else {
+        expressionEl.textContent = "";
+      }
+    }
+
+    function highlightOperator(operator) {
+      document.querySelectorAll(".key-operator").forEach((btn) => {
+        btn.classList.toggle("is-selected", btn.getAttribute("data-operator") === operator && state.operator === operator && state.overwrite);
+      });
+    }
+
+    // ----- action dispatcher -----
+    function handleAction(action, target) {
+      if (action === "clear") {
+        resetAll();
+      } else if (action === "backspace") {
+        backspace();
+      } else if (action === "negate") {
+        negate();
+      } else if (action === "percent") {
+        percent();
+      } else if (action === "decimal") {
+        inputDecimal();
+      } else if (action === "operator") {
+        chooseOperator(target.getAttribute("data-operator"));
+      } else if (action === "equals") {
+        equals();
+      }
+      render();
+      highlightOperator(state.operator);
+    }
+
+    // ----- event listeners (click) -----
+    keypad.addEventListener("click", (event) => {
+      const target = event.target.closest(".key");
+      if (!target) return;
+      const digit = target.getAttribute("data-digit");
+      if (digit !== null && target.getAttribute("data-action") === null) {
+        inputDigit(digit);
+        render();
+        highlightOperator(state.operator);
+        return;
+      }
+      const action = target.getAttribute("data-action");
+      if (action) {
+        handleAction(action, target);
+      }
+    });
+
+    // ----- keyboard support -----
+    const KEY_MAP = {
+      "+": { action: "operator", operator: "add" },
+      "-": { action: "operator", operator: "subtract" },
+      "*": { action: "operator", operator: "multiply" },
+      "/": { action: "operator", operator: "divide" },
+      "%": { action: "percent" },
+      "Enter": { action: "equals" },
+      "=": { action: "equals" },
+      "Backspace": { action: "backspace" },
+      "Escape": { action: "clear" },
+      ".": { action: "decimal" }
+    };
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key >= "0" && event.key <= "9") {
+        inputDigit(event.key);
+        render();
+        highlightOperator(state.operator);
+        return;
+      }
+
+      const mapped = KEY_MAP[event.key];
+      if (!mapped) return;
+      event.preventDefault();
+
+      if (mapped.action === "operator") {
+        chooseOperator(mapped.operator);
+        render();
+        highlightOperator(state.operator);
+        return;
+      }
+
+      handleAction(mapped.action, null);
+    });
+
+    // initial render
+    render();
+  })();
+</script>
+</body>
+</html>

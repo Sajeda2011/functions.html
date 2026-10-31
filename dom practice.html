@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+    #body{
+      display: flex;
+      background-color: blanchedalmond;
+
+    }
+
+
+
+  </style>
+</head>
+<body id="body">
+
+<a href="./cover picture.jpg" download>download picture</a>
+
+  <script>
+
+// =====CLASSES MANIPULATUON=======
+// ADD
+// let btn = document.getElementById("sajida")
+// btn.addEventListener('click', function(){
+// btn.classList.add('sah'); 
+// });  
+
+// REMOVE
+// let box = document.getElementById('box')
+// let btn = document.getElementById('remove')
+
+// btn.addEventListener('click' , function(){
+//   box.classList.remove('highlight')
+// })
+
+// TOGGLE
+// let ToggleBtn =document.getElementById('toggleBtn')
+// let Content=document.getElementById('content')
+
+// ToggleBtn.addEventListener('click', function(){
+// Content.classList.toggle('dark')
+
+// });
+
+// toggle
+// let body = document.getElementById('body')
+// let ToggleBtn = document.getElementById('toggleBtn')
+
+// ToggleBtn.addEventListener('click', function(){
+// body.classList.toggle('dark');
+
+// })
+
+// let actionBtn=document.getElementById('actionBtn')
+
+// actionBtn.addEventListener('click', function(){
+// if(actionBtn.classList.contains('abled')){
+//   alert('yeh button abled hai')
+// }else{
+//   alert('this button is disabled')
+// }
+// });
+
+
+
+
+
+
+// ======attribute manipulation=====
+// has attribute
+// let input = document.getElementById("email")
+// if(input.hasAttribute('required')){
+//   prompt("kindly fill this field")
+// }
+// console.log(input.value)
+
+
+// let img = document.getElementById("profilePic");
+// if (img.hasAttribute('src')){
+//   img.style.display = 'block';
+// }
+// else{
+//   img.alt='image missing';
+// }
+
+// getAttribute
+// let img = document.getElementById("profilePic");
+// let srvValue = img.getAttribute("src");
+// console.log(srvValue)
+
+
+
+
+// ARRAY 
+// accessing array
+let feedback=['great platform !','helpful resource'];
+feedback.push('excellent guidance!')
+console.log(...feedback[1])
+// spread operator 
+
+// array length
+let fruits = ["apple","banana","narangi"]
+fruits[2]="gauva"
+document.write(fruits.length)
+
+// addition in array
+// push() adds in the ends
+fruits.push("mango");
+console.log(fruits) 
+
+// pop() last removes 
+fruits.pop()
+console.log(...fruits)
+
+// unshift() start m add 
+fruits.unshift("dragonfruits")
+console.log(fruits)
+
+// shift() first remove
+fruits.shift()
+console.log(fruits)
+
+// splice 
+// splice minus and plus 
+let sajida =['kid1','kid2','kid3','kid4']
+let sajidaafter = sajida.splice(1 , 2 , 'kid5' , 'kid6' ) 
+
+console.log(sajidaafter);
+console.log(sajida);
+
+// accessing and searching arrays 
+// indexOf()
+let fruit = ['apple','banana','grapes','pear']
+ console.log(fruit.indexOf('banana'))
+ console.log(fruit.indexOf('pear'))
+ console.log(fruit.indexOf('grapes'))
+ console.log(fruit.indexOf('apple'))
+ console.log(fruit.indexOf('DRAGON FRUIT'))
+
+
+//  nan
+let a = Math.sqrt(-1);
+console.log(a)
+ 
+
+// task 
+
+  let colors = ["red", "blue", "green", "blue", "yellow"];
+  let saj = colors.indexOf("blue")
+  console.log(saj)
+
+  // task 3
+  // let students = ["Ali", "Sara", "Bilal", "Hina"];
+
+  let nums = [5, 10, 15, 10, 20, 10];
+
+  let saji = nums.indexOf(10 ,4)
+  console.log(saji);
+
+  // task 4
+  let arr = [1, 2, 3, 4, 5];
+
+  if(arr.includes(indexOf("7"))){
+    console.log("found")
+  }else(
+    console.log("not found")
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>
+
+
+
+

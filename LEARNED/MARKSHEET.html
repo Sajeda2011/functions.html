@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+    document.title = "marksheet";
+
+    // starting 
+
+    let studentName = prompt("ENTER YOUR NAME");
+    let Email = (prompt("ENTER YOUR EMAIL"));
+    let StudentID = Number(prompt("ENTER YOUR ID"));
+    let contnumber = Number(prompt("ENTER YOUR CONTACT NUMBER"));
+    let maths = Number(prompt("ENTER YOUR MATHS MARKS(OUT OF 50)"))
+    let eng = Number(prompt("ENTER YOUR ENGLISH MARKS(OUT OF 50)"))
+    let urdu = Number(prompt("ENTER YOUR URDU MARKS(OUT OF 50)"))
+    let science = Number(prompt("ENTER YOUR SCIENCE MARKS(OUT OF 50)"))
+    let computer = Number(prompt("ENTER YOUR COMPUTER MARKS(OUT OF 50)"))
+
+
+     // percentage
+    let obtMrks = maths + eng + urdu + science + computer;
+    let totalMrks = 250;
+    let percentage = obtMrks / totalMrks * 100;
+    let grade = "";
+
+
+    // garde
+    if (percentage >= 90) {
+
+      grade = "A1 , Congratulations !! you are from top 10 students"
+    }
+    else if (percentage >= 80) {
+      grade = "A+ , Congratulations !! you are from top 20 students"
+    }
+    else if (percentage >= 70) {
+      grade = "B , Congratulations !! you are from top 30 students"
+    }
+    else if (percentage <= 50) {
+      grade = "C , you are from top 40 students"
+    }
+    else {
+      grade = "you are successfully failed braatherrr!"
+    };
+
+ 
+
+    // prnt marksheet
+    let marksheet = document.write(
+      `=====MARKESHEET===== <br>
+  NAME= ${studentName} <br>
+  ID = ${StudentID}<br>
+  EMAIL=${Email}<br>
+  CONATCT NUMBER=${contnumber}<br>
+  MATH MARKS = ${maths} <br>
+  ENGLISH MARKS = ${eng} <br>
+  SCIENCE MARKS = ${science} <br>
+  COMPUTER MARKS = ${computer} <br>
+  URDU MARKS = ${urdu}<br>
+  GRADE= ${grade} <br>
+  PERCENTAGE= ${percentage} <br>
+  `
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

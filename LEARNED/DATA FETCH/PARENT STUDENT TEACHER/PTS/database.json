@@ -1,0 +1,43 @@
+{
+  "PTM": [
+    {
+      "id": 1,
+      "role": "STUDENT",
+      "age": 16,
+      "guardianName": "Mr. Riaz",
+      "meetingStartTime": "10:00 AM",
+      "complaints": "alot of homework",
+      "behaviour": "aggressive",
+      "useful": "No",
+      "minutesOfMeeting": 15,
+      "studentProgress": "Improving",
+      "nextMeeting": "Yes"
+    },
+    {
+      "id": 2,
+      "role": "PARENT",
+      "age": 45,
+      "guardianName": "Riaz",
+      "meetingStartTime": "10:00 AM",
+      "complaints": "teachers dont concentrate",
+      "behaviour": "Cooperative",
+      "useful": "Yes",
+      "minutesOfMeeting": 15,
+      "studentProgress": "not good",
+      "nextMeeting": "Yes"
+    },
+    {
+      "id": 3,
+      "role": "TEACHER",
+      "age": 30,
+      "guardianName": "Ali",
+      "meetingStartTime": "10:00 AM",
+      "complaints": "Homework incomplete",
+      "behaviour": "immature",
+      "useful": "Yes",
+      "minutesOfMeeting": 15,
+      "studentProgress": "Observed",
+      "nextMeeting": "Yes"
+    }
+  ]
+}
